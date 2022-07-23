@@ -14,7 +14,8 @@ class Game:
         while counter < words_count:
             cls.__prompt_words()
             cls.__user_input()
-            
+            # TODO: Add word highlighting for current word
+            # TODO: Set the user input as the last word he inputted when it's incorrect 
             if cls.words[counter] == cls.last_word:
                 counter += 1
                 
