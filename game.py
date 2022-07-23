@@ -15,7 +15,8 @@ class Game:
             cls.__prompt_words()
             cls.__user_input()
             # TODO: Add word highlighting for current word
-            # TODO: Set the user input as the last word he inputted when it's incorrect 
+            # TODO: Set the user input as the last word he inputted when it's incorrect
+            # TODO: Create somewhat of a webcrawler that gets sentences from the web and create a words list from it
             if cls.words[counter] == cls.last_word:
                 counter += 1
                 
