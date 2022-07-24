@@ -4,7 +4,9 @@ import readline
 import random
 from colorizer import Colorizer
 from words_generator import WordsGenerator
-# TODO: Create somewhat of a webcrawler that gets sentences from the web and create a words list from it
+# TODO: Find a solution to the sentence length
+# TODO: Set space as enter
+# TODO: Highlight mistake inside prompt filler
 class Game:
     sentences = random.randint(1, 4)
     words = WordsGenerator.generate(sentences).split(' ')
