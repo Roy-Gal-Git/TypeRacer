@@ -1,10 +1,13 @@
 import time
 import math
 import readline
+import random
 from colorizer import Colorizer
+from words_generator import WordsGenerator
 # TODO: Create somewhat of a webcrawler that gets sentences from the web and create a words list from it
 class Game:
-    words = ["Hello", "world", "test", "this", "app"]
+    sentences = random.randint(1, 4)
+    words = WordsGenerator.generate(sentences).split(' ')
     last_word = str()
 
     @classmethod
@@ -48,7 +51,11 @@ class Game:
             cls.last_word = input(">>> ")
         else:
             cls.last_word = cls.input_with_prefill(correct, cls.last_word)
-        cls.delete_prompt()
+        
+        # Delete the sentences
+        for sentence in range(cls.sentences):
+            cls.delete_prompt()
+        # Delete the old prompt
         cls.delete_prompt()
         
     @staticmethod
