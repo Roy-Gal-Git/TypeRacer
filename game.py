@@ -1,38 +1,28 @@
 import time
 import math
 import readline
-
+from colorizer import Colorizer
+# TODO: Create somewhat of a webcrawler that gets sentences from the web and create a words list from it
 class Game:
-    GREEN = "\033[92m"
-    RED = "\033[91m"
-    ENDC = "\033[0m"
-    LINE = ">>> "
     words = ["Hello", "world", "test", "this", "app"]
-    prompt = {
-        "start": LINE,
-        "correct": GREEN + LINE + ENDC,
-        "incorrect": RED + LINE + ENDC
-    }
     last_word = str()
 
     @classmethod
     def start_game(cls):
         start_time = time.time()
         words_count = len(cls.words)
-        prompt_type = "start"
-        counter = 0
+        correct = None
+        current_word_index = 0
         
-        while counter < words_count:
-            cls.__prompt_words()
-            cls.__user_input(prompt_type)
-            # TODO: Add word highlighting for current word
-            # TODO: Create somewhat of a webcrawler that gets sentences from the web and create a words list from it
-            if cls.words[counter] == cls.last_word:
+        while current_word_index < words_count:
+            cls.__prompt_words(current_word_index)
+            cls.__user_input(correct)
+            if cls.words[current_word_index] == cls.last_word:
                 cls.last_word = str()
-                prompt_type = "correct"
-                counter += 1
+                correct = True
+                current_word_index += 1
             else:
-                prompt_type = "incorrect"
+                correct = False
 
                 
                                 
@@ -45,13 +35,19 @@ class Game:
         print(f"WPM: {words_per_minute}")
                 
     @classmethod
-    def __prompt_words(cls):
+    def __prompt_words(cls, current_word_index):
+        current_word = cls.words[current_word_index]
+        cls.words[current_word_index] = Colorizer.multi_colored_text(current_word, ["cyan", "underline"])
         words_to_sentence = ' '.join(cls.words)
+        cls.words[current_word_index] = current_word
         print(words_to_sentence)
         
     @classmethod
-    def __user_input(cls, prompt_type):
-        cls.last_word = cls.input_with_prefill(cls.prompt[prompt_type], cls.last_word)
+    def __user_input(cls, correct):
+        if correct == None:
+            cls.last_word = input(">>> ")
+        else:
+            cls.last_word = cls.input_with_prefill(correct, cls.last_word)
         cls.delete_prompt()
         cls.delete_prompt()
         
@@ -62,12 +58,13 @@ class Game:
         print(f"{CURSOR_UP_ONE}{ERASE_LINE}", end="")
         
     @staticmethod
-    def input_with_prefill(prompt, text):
+    def input_with_prefill(correct, prefilled_text):
         def hook():
-            readline.insert_text(text)
+            readline.insert_text(prefilled_text)
             readline.redisplay()
         readline.set_pre_input_hook(hook)
-        result = input(prompt)
+        color = "green" if correct else "red"
+        result = input(Colorizer.colored_text(">>> ", color))
         readline.set_pre_input_hook()
         return result
         
